@@ -14,6 +14,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const pollData = await getPoll(pollLink); // Retrieve the poll data based on the link
   console.log(pollData);
 
+  if (pollData) {
+    const frameMetadata = await fdk.getFrameMetadata({
+      post_url: `${process.env.BASE_URL}/redirect`,
+      buttons: [{ label: "Learn how to make this", action: "post_redirect" }],
+      aspect_ratio: "1:1",
+      cid: "QmQQYh6beZLHhNucXKRCJM8EVWgDQCBdaEHyqcWSLemGtm",
+    });
+    return new NextResponse(frameMetadata);
+  }
+
   // if (pollData) {
   //   // Respond with frame metadata that displays the poll
   //   const frameMetadata = await fdk.getFrameMetadata({
