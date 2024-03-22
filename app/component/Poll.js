@@ -17,6 +17,11 @@ const PollCreator = () => {
   }, []);
 
   const getPolls = async () => {
+    // async function GET(req, res) {
+    //   const pollLink = req;
+    //   console.log(pollLink, "pollLink");
+    // }
+    // GET();
     await axios
       .get("https://frame-backend-z2b9.onrender.com/polls")
       .then((res) => {

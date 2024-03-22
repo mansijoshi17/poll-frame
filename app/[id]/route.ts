@@ -8,20 +8,22 @@ const fdk = new PinataFDK({
   pinata_gateway: process.env.GATEWAY_URL as string,
 });
 
-export async function GET(
-  req: NextRequest,
-  res: NextResponse,
-  { params }: any
-) {
-  const pollData: any = await getPoll(params.id); // Retrieve the poll data based on the link
-  console.log(pollData);
+export async function GET(req: NextRequest, res: NextResponse) {
+  const pollLink = req.nextUrl.pathname.split("/").pop(); // Extract the poll link from the URL
+  console.log(pollLink);
+  const pollData: any = await getPoll(pollLink); // Retrieve the poll data based on the link
 
   if (pollData) {
     const frameMetadata = await fdk.getFrameMetadata({
       post_url: `${process.env.BASE_URL}/redirect`,
-      buttons: [{ label: pollData.title, action: "post_redirect" }],
+      buttons: pollData.choices.map((choice: any) => ({
+        label: choice.value,
+        action: "post_redirect",
+      })), // Create a button for each choice
       aspect_ratio: "1:1",
-      cid: "QmQQYh6beZLHhNucXKRCJM8EVWgDQCBdaEHyqcWSLemGtm",
+      image: {
+        url: `https://placehold.co/1920x1005/white/black?text=${pollData.title}`,
+      },
     });
     return new NextResponse(frameMetadata);
   }
