@@ -43,46 +43,61 @@ export async function GET(req: NextRequest, res: NextResponse) {
 }
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const body = await req.json();
-  const fid = body.untrustedData.fid;
-  const address = await getConnectedAddressForUser(fid);
-  const balance = await balanceOf(address);
-  const { isValid, message } = await fdk.validateFrameMessage(body);
+  // const body = await req.json();
+  // const fid = body.untrustedData.fid;
+  // const address = await getConnectedAddressForUser(fid);
+  // const balance = await balanceOf(address);
+  // const { isValid, message } = await fdk.validateFrameMessage(body);
 
-  if (typeof balance === "number" && balance !== null && balance < 1) {
-    try {
-      const mint = await mintNft(address);
-      console.log(mint);
-      const frameMetadata = await fdk.getFrameMetadata({
-        post_url: `${process.env.BASE_URL}/redirect`,
-        buttons: [
-          {
-            label: "Want to learn more about crypto?",
-            action: "post_redirect",
-            target: "https://cointopper.com/",
-          },
-        ],
-        image: { url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/" },
-      });
+  const frameMetadata = await fdk.getFrameMetadata({
+    post_url: `${process.env.BASE_URL}/redirect`,
+    buttons: [
+      {
+        label: "Want to learn more about crypto?",
+        action: "post_redirect",
+        target: "https://cointopper.com/",
+      },
+    ],
+    image: {
+      url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/",
+    },
+  });
+  return new NextResponse(frameMetadata);
 
-      return new NextResponse(frameMetadata);
-    } catch (error) {
-      console.log(error);
-      return NextResponse.json({ error: error });
-    }
-  } else {
-    const frameMetadata = await fdk.getFrameMetadata({
-      post_url: `${process.env.BASE_URL}/redirect`,
-      buttons: [
-        {
-          label: "Want to learn more about crypto?",
-          action: "post_redirect",
-          target: "https://cointopper.com/",
-        },
-      ],
-      image: { url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/" },
-    });
+  // if (typeof balance === "number" && balance !== null && balance < 1) {
+  //   try {
+  //     const mint = await mintNft(address);
+  //     console.log(mint);
+  //     const frameMetadata = await fdk.getFrameMetadata({
+  //       post_url: `${process.env.BASE_URL}/redirect`,
+  //       buttons: [
+  //         {
+  //           label: "Want to learn more about crypto?",
+  //           action: "post_redirect",
+  //           target: "https://cointopper.com/",
+  //         },
+  //       ],
+  //       image: { url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/" },
+  //     });
 
-    return new NextResponse(frameMetadata);
-  }
+  //     return new NextResponse(frameMetadata);
+  //   } catch (error) {
+  //     console.log(error);
+  //     return NextResponse.json({ error: error });
+  //   }
+  // } else {
+  //   const frameMetadata = await fdk.getFrameMetadata({
+  //     post_url: `${process.env.BASE_URL}/redirect`,
+  //     buttons: [
+  //       {
+  //         label: "Want to learn more about crypto?",
+  //         action: "post_redirect",
+  //         target: "https://cointopper.com/",
+  //       },
+  //     ],
+  //     image: { url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/" },
+  //   });
+
+  //   return new NextResponse(frameMetadata);
+  // }
 }
