@@ -24,10 +24,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const formattedTime = `${days}:${hours}:${minutes}:${seconds}`;
 
     const frameMetadata = await fdk.getFrameMetadata({
-      post_url: `${process.env.BASE_URL}/redirect`,
+      post_url: `${process.env.BASE_URL}`,
       buttons: pollData.choices.map((choice: any) => ({
         label: choice.value,
-        action: "post_redirect",
+        action: "post_id",
       })),
       image: {
         url: `https://placehold.co/500x500/white/black?text=${encodeURIComponent(
