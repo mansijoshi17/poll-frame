@@ -13,6 +13,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
   const pollData: any = await getPoll(pollLink); // Retrieve the poll data based on the link
 
   if (pollData) {
+    const dateString = pollData.endDate;
+    const date = new Date(dateString);
+
+    const days = date.getUTCDate() - 1; // Subtract 1 because the day of the month starts at 1
+    const hours = date.getUTCHours();
+    const minutes = date.getUTCMinutes();
+    const seconds = date.getUTCSeconds();
+
+    const formattedTime = `${days}:${hours}:${minutes}:${seconds}`;
+
     const frameMetadata = await fdk.getFrameMetadata({
       post_url: `${process.env.BASE_URL}/redirect`,
       buttons: pollData.choices.map((choice: any) => ({
@@ -22,7 +32,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       image: {
         url: `https://placehold.co/500x500/white/black?text=${encodeURIComponent(
           pollData.title
-        )}%0Ahello`,
+        )}%0A%0A${encodeURIComponent(formattedTime)}`,
       },
     });
     return new NextResponse(frameMetadata);
