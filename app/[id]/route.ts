@@ -59,14 +59,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
           {
             label: "Want to learn more about crypto?",
             action: "post_redirect",
+            target: "https://cointopper.com/",
           },
         ],
-        aspect_ratio: "1:1",
-        cid: "QmQQYh6beZLHhNucXKRCJM8EVWgDQCBdaEHyqcWSLemGtm",
+        image: { url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/" },
       });
-      if (isValid) {
-        await fdk.sendAnalytics("frame-mint-tutorial-mint", body);
-      }
 
       return new NextResponse(frameMetadata);
     } catch (error) {
@@ -77,14 +74,14 @@ export async function POST(req: NextRequest, res: NextResponse) {
     const frameMetadata = await fdk.getFrameMetadata({
       post_url: `${process.env.BASE_URL}/redirect`,
       buttons: [
-        { label: "Want to learn more about crypto?", action: "post_redirect" },
+        {
+          label: "Want to learn more about crypto?",
+          action: "post_redirect",
+          target: "https://cointopper.com/",
+        },
       ],
-      aspect_ratio: "1:1",
-      cid: "QmQQYh6beZLHhNucXKRCJM8EVWgDQCBdaEHyqcWSLemGtm",
+      image: { url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/" },,
     });
-    if (isValid) {
-      await fdk.sendAnalytics("frame-mint-tutorial-mint", body);
-    }
 
     return new NextResponse(frameMetadata);
   }
