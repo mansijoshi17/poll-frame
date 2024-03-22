@@ -20,9 +20,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
         action: "post_redirect",
       })),
       image: {
-        url: `https://placehold.co/500x500/white/black?text=${
-          pollData.title
-        }<br/>text=${"hello"}&style=objectFit:fill`,
+        url: `https://placehold.co/500x500/white/black?text=${pollData.title}&nbsp;hello`,
       },
     });
     return new NextResponse(frameMetadata);
