@@ -24,7 +24,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const formattedTime = `${days}:${hours}:${minutes}:${seconds}`;
 
     const frameMetadata = await fdk.getFrameMetadata({
-      post_url: `${process.env.BASE_URL}+"/"+${pollData._id}`,
+      post_url: `${process.env.BASE_URL}/${pollData._id}`,
       buttons: pollData.choices.map((choice: any) => ({
         label: choice.value,
         action: "post",
