@@ -15,10 +15,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       if (isValid) {
         await fdk.sendAnalytics("frame-mint-tutorial-blog", body);
       }
-      return NextResponse.redirect(
-        "https://www.pinata.cloud/blog/how-to-build-a-farcaster-frame-that-mints-nfts",
-        { status: 302 },
-      );
+      return NextResponse.redirect("https://cointopper.com/", { status: 302 });
     } catch (error) {
       console.log(error);
       return NextResponse.json({ error: error });
@@ -28,7 +25,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       if (isValid) {
         await fdk.sendAnalytics("frame-mint-tutorial-video", body);
       }
-      return NextResponse.redirect("https://youtu.be/5VVOMolm-TA", {
+      return NextResponse.redirect("https://cointopper.com/", {
         status: 302,
       });
     } catch (error) {
