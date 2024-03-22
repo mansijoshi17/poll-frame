@@ -80,7 +80,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
           target: "https://cointopper.com/",
         },
       ],
-      image: { url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/" },,
+      image: { url: "https://bafybeia6w3skqj5uhgfvnma22ycprlyznpthj52eo5x5gflkg4i7meenuy.ipfs.dweb.link/" },
     });
 
     return new NextResponse(frameMetadata);
