@@ -1,11 +1,14 @@
 "use client";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import { useProfile } from "@farcaster/auth-kit";
 
 const PollCreator = () => {
   const [pollTitle, setPollTitle] = useState("");
   const [choices, setChoices] = useState([{ id: 1, value: "" }]);
+  const [endDate, setEndDate] = useState(new Date());
   const [polls, setPolls] = useState([]);
   const {
     isAuthenticated,
@@ -20,11 +23,10 @@ const PollCreator = () => {
     await axios
       .get("https://frame-backend-z2b9.onrender.com/polls")
       .then((res) => {
-        console.log(res, "res");
         setPolls(res.data.data);
       })
       .catch((err) => {
-        console.log(err, "err");
+        console.error(err);
       });
   };
 
@@ -50,15 +52,16 @@ const PollCreator = () => {
       .post("https://frame-backend-z2b9.onrender.com/polls/add", {
         title: pollTitle,
         choices: choices,
-        fid: fid,
+        endDate: endDate,
+        fid: fid ? fid : localStorage.getItem("fid"),
       })
       .then((res) => {
         alert("Poll Created!");
-        console.log(res, "res");
+        getPolls(); // Refresh the list of polls
       })
       .catch((err) => {
         alert("Something went wrong!");
-        console.log(err, "err");
+        console.error(err);
       });
   };
 
@@ -118,6 +121,21 @@ const PollCreator = () => {
             </button>
           </div>
           <div>
+            <label
+              htmlFor="endDate"
+              className="block text-sm font-medium text-gray-700"
+            >
+              End Date
+            </label>
+            <DatePicker
+              selected={endDate}
+              onChange={(date) => setEndDate(date)}
+              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+              showTimeSelect
+              dateFormat="Pp"
+            />
+          </div>
+          <div>
             <button
               type="submit"
               className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
@@ -127,17 +145,27 @@ const PollCreator = () => {
           </div>
         </form>
         <div>
-          <h1>Polls:</h1>
-          {polls.map((poll, index) => {
-            return (
-              <>
-                <p>
-                  {index}.{poll.title}
-                </p>
-                <p> {`https://poll-frame.vercel.app/${poll._id}`}</p>
-              </>
-            );
-          })}
+          <h1 className="text-2xl font-bold mb-4">Polls:</h1>
+          <ul className="list-disc list-inside">
+            {polls.map((poll, index) => {
+              return (
+                <li key={poll._id} className="mb-2">
+                  <p className="font-semibold">
+                    {index + 1}. {poll.title}
+                  </p>
+                  <p className="text-blue-500">
+                    <a
+                      href={`https://poll-frame-gamma.vercel.app/${poll._id}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                    >
+                      https://poll-frame-gamma.vercel.app/{poll._id}
+                    </a>
+                  </p>
+                </li>
+              );
+            })}
+          </ul>
         </div>
       </>
     </div>
