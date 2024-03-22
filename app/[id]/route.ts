@@ -19,13 +19,16 @@ export async function GET(req: NextRequest, res: NextResponse) {
       buttons: pollData.choices.map((choice: any) => ({
         label: choice.value,
         action: "post_redirect",
-      })), // Create a button for each choice
-      aspect_ratio: "1:1",
+      })),
       image: {
-        url: `https://placehold.co/1920x1005/white/black?text=${pollData.title}`,
+        url: `https://placehold.co/400x400/white/black?text=${pollData.title}&style=objectFit:fill`,
       },
+      
     });
     return new NextResponse(frameMetadata);
+  } else {
+    // Handle the case where the poll link is invalid or the poll does not exist
+    return new NextResponse("Poll not found", { status: 404 });
   }
 
   // if (pollData) {
