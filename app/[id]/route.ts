@@ -24,10 +24,10 @@ export async function GET(req: NextRequest, res: NextResponse) {
     const formattedTime = `${days}:${hours}:${minutes}:${seconds}`;
 
     const frameMetadata = await fdk.getFrameMetadata({
-      post_url: `${process.env.BASE_URL}`,
+      post_url: `${process.env.BASE_URL}+"/"+${pollData._id}`,
       buttons: pollData.choices.map((choice: any) => ({
         label: choice.value,
-        action: "post_id",
+        action: "post",
       })),
       image: {
         url: `https://placehold.co/500x500/white/black?text=${encodeURIComponent(
@@ -55,7 +55,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
       {
         label: "Want to learn more about crypto?",
         action: "post_redirect",
-        target: "https://cointopper.com/",
       },
     ],
     image: {
