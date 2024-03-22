@@ -51,7 +51,7 @@ const PollCreator = () => {
     await axios
       .post("https://frame-backend-z2b9.onrender.com/polls/add", {
         title: pollTitle,
-        choices: choices,
+        choices: choices.map((choice) => choice.value),
         endDate: endDate,
         fid: fid ? fid : localStorage.getItem("fid"),
       })
@@ -66,108 +66,111 @@ const PollCreator = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10">
-      {/* {isAuthenticated && (
-    
-      )} */}
-      <>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label
-              htmlFor="pollTitle"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Poll Title
-            </label>
-            <input
-              type="text"
-              id="pollTitle"
-              value={pollTitle}
-              onChange={(e) => setPollTitle(e.target.value)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              required
-            />
-          </div>
-          <div>
-            {choices.map((choice) => (
-              <div key={choice.id} className="flex items-center space-x-2">
-                <input
-                  type="text"
-                  value={choice.value}
-                  onChange={(e) =>
-                    handleChangeChoice(choice.id, e.target.value)
-                  }
-                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                  placeholder={`Choice ${choice.id}`}
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={() => handleRemoveChoice(choice.id)}
-                  className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                >
-                  Remove
-                </button>
-              </div>
-            ))}
-          </div>
-          <div>
-            <button
-              type="button"
-              onClick={handleAddChoice}
-              className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-            >
-              Add Choice
-            </button>
-          </div>
-          <div>
-            <label
-              htmlFor="endDate"
-              className="block text-sm font-medium text-gray-700"
-            >
-              End Date
-            </label>
-            <DatePicker
-              selected={endDate}
-              onChange={(date) => setEndDate(date)}
-              className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-              showTimeSelect
-              dateFormat="Pp"
-            />
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-            >
-              Create Poll
-            </button>
-          </div>
-        </form>
+    <div className="max-w-lg mx-auto mt-10 bg-white shadow-lg rounded-lg p-6">
+      <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <h1 className="text-2xl font-bold mb-4">Polls:</h1>
-          <ul className="list-disc list-inside">
-            {polls.map((poll, index) => {
-              return (
-                <li key={poll._id} className="mb-2">
-                  <p className="font-semibold">
-                    {index + 1}. {poll.title}
-                  </p>
-                  <p className="text-blue-500">
-                    <a
-                      href={`https://poll-frame-gamma.vercel.app/${poll._id}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      https://poll-frame-gamma.vercel.app/{poll._id}
-                    </a>
-                  </p>
-                </li>
-              );
-            })}
+          <label
+            htmlFor="pollTitle"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Title
+          </label>
+          <input
+            type="text"
+            id="pollTitle"
+            value={pollTitle}
+            onChange={(e) => setPollTitle(e.target.value)}
+            className="mt-1  w-full rounded-md border-black-300   sm:text-sm p-2 input border bg-pgray-100 rounded-xl border-pgray-100"
+            required
+          />
+        </div>
+        <div>
+          <label
+            htmlFor="pollTitle"
+            className="block text-sm font-medium text-gray-700"
+          >
+            Choices
+          </label>
+          {choices.map((choice) => (
+            <div key={choice.id} className="flex items-center space-x-2">
+              <input
+                type="text"
+                value={choice.value}
+                onChange={(e) => handleChangeChoice(choice.id, e.target.value)}
+                className="mt-1  w-full rounded-md border-black-300   sm:text-sm p-2 input border bg-pgray-100 rounded-xl border-pgray-100"
+                placeholder={`Choice ${choice.id}`}
+                required
+              />
+              <button
+                type="button"
+                onClick={() => handleRemoveChoice(choice.id)}
+                className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+        </div>
+        <div>
+          <button
+            type="button"
+            onClick={handleAddChoice}
+            className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded text-white bg-blue-500 hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          >
+            Add Choice
+          </button>
+        </div>
+        <div>
+          <label
+            htmlFor="pollTitle"
+            className="block text-sm font-medium text-gray-700"
+          >
+            End Date
+          </label>
+          <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            className="mt-1  w-full rounded-md border-black-300   sm:text-sm p-2 input border bg-pgray-100 rounded-xl border-pgray-100"
+            showTimeSelect
+            dateFormat="Pp"
+          />
+        </div>
+        <div>
+          <button
+            type="submit"
+            className="w-full inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+          >
+            Create Predictions
+          </button>
+        </div>
+      </form>
+      <div className="mt-10">
+        <h1 className="text-3xl font-bold mb-6 text-center">Predictions</h1>
+        <div className="max-w-3xl mx-auto bg-white shadow rounded-lg overflow-hidden">
+          <ul className="divide-y divide-gray-200">
+            {polls.map((poll, index) => (
+              <li key={poll._id} className="px-6 py-4">
+                <div className="flex justify-between items-center">
+                  <div>
+                    <p className="text-lg font-semibold text-gray-900">
+                      {index + 1}. {poll.title}
+                    </p>
+                  </div>
+                  
+                  <a
+                    href={`https://poll-frame-gamma.vercel.app/${poll._id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                  >
+                    View Poll
+                  </a>
+                </div>
+              </li>
+            ))}
           </ul>
         </div>
-      </>
+      </div>
     </div>
   );
 };

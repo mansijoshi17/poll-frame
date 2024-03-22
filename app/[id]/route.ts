@@ -32,7 +32,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
       image: {
         url: `https://placehold.co/500x500/white/black?text=${encodeURIComponent(
           pollData.title
-        )}%0A%0AEnding In:${encodeURIComponent(formattedTime)}`,
+        )}%0A%0AEnding In : ${encodeURIComponent(formattedTime)}`,
       },
     });
     return new NextResponse(frameMetadata);
@@ -48,14 +48,19 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const address = await getConnectedAddressForUser(fid);
   const balance = await balanceOf(address);
   const { isValid, message } = await fdk.validateFrameMessage(body);
-  console.log(balance);
+
   if (typeof balance === "number" && balance !== null && balance < 1) {
     try {
       const mint = await mintNft(address);
       console.log(mint);
       const frameMetadata = await fdk.getFrameMetadata({
         post_url: `${process.env.BASE_URL}/redirect`,
-        buttons: [{ label: "Learn how to make this", action: "post_redirect" }],
+        buttons: [
+          {
+            label: "Want to learn more about crypto?",
+            action: "post_redirect",
+          },
+        ],
         aspect_ratio: "1:1",
         cid: "QmQQYh6beZLHhNucXKRCJM8EVWgDQCBdaEHyqcWSLemGtm",
       });
@@ -71,9 +76,11 @@ export async function POST(req: NextRequest, res: NextResponse) {
   } else {
     const frameMetadata = await fdk.getFrameMetadata({
       post_url: `${process.env.BASE_URL}/redirect`,
-      buttons: [{ label: "Learn how to make this!", action: "post_redirect" }],
+      buttons: [
+        { label: "Want to learn more about crypto?", action: "post_redirect" },
+      ],
       aspect_ratio: "1:1",
-      cid: "QmYTXErszk9Mgwn51dgYYxLo1qhfXe3v2y8DNWFcwkBjc7",
+      cid: "QmQQYh6beZLHhNucXKRCJM8EVWgDQCBdaEHyqcWSLemGtm",
     });
     if (isValid) {
       await fdk.sendAnalytics("frame-mint-tutorial-mint", body);
