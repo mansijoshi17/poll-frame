@@ -51,7 +51,7 @@ const PollCreator = () => {
     await axios
       .post("https://frame-backend-z2b9.onrender.com/polls/add", {
         title: pollTitle,
-        choices: choices.map((choice) => choice.value),
+        choices: choices,
         endDate: endDate,
         fid: fid ? fid : localStorage.getItem("fid"),
       })
